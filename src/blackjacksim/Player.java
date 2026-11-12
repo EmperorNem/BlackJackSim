@@ -19,8 +19,9 @@ public class Player {
         playerCards.add(dealtCard);
         score += dealtCard.value;
     }
-    public void setScore() {
+    public void resetPlayer() {
         score = 0;
+        playerCards.clear();
     }
     public void getPlayerCards() {
         System.out.print("Players cards: ");

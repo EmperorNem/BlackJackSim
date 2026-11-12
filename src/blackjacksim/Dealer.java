@@ -16,6 +16,9 @@ public class Dealer {
         playerCards.add(dealtCard.getCard());
         score = score + dealtCard.value;
     }
+    public void dealerHidden(Card dealtCard) {
+        playerCards.add(dealtCard.getCard());
+    }
     public void setScore() {
         score = 0;
     }
