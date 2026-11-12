@@ -27,5 +27,10 @@ public class Deck {
     public void shuffleDeck() {
         Collections.shuffle(myDeck);
     }
+    public Card dealCard() {
+        Card dealtCard = myDeck.getFirst();
+        myDeck.removeFirst();
+        return dealtCard;
+    }
 
 }
