@@ -22,10 +22,12 @@ public class BlackJackGame {
         totalAcePlayer = 0;
         totalAceDealer = 0;
 
+        startGame();
+
     }
     public void dealDelay() {
         try {
-            Thread.sleep(1500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -38,19 +40,28 @@ public class BlackJackGame {
 
         playerCards.add(myDeck.getMyDeck().getFirst());
         myDeck.getMyDeck().removeFirst();
-        System.out.println(playerCards.getFirst().getCard());
+        System.out.println("Player Cards: " + playerCards.getFirst().getCard());
 
         dealDelay();
 
         dealerCards.add(myDeck.getMyDeck().getFirst());
         myDeck.getMyDeck().removeFirst();
-        System.out.println(dealerCards.getFirst().getCard());
+        System.out.println("Dealer Cards: " + dealerCards.getFirst().getCard());
 
         dealDelay();
 
         playerCards.add(myDeck.getMyDeck().getFirst());
         myDeck.getMyDeck().removeFirst();
-        System.out.println(playerCards.getFirst().getCard() + " " + playerCards.getLast().getCard());
+        System.out.println("Player Cards: " + playerCards.getFirst().getCard() + ", " + playerCards.getLast().getCard());
+        if (totalAcePlayer == 1) {
+            System.out.println("Player score is " + (playerCards.getFirst().value + playerCards.getLast().value) + " or player score is " + (playerCards.getFirst().value + playerCards.getLast().value - 10));
+        }
+        else if (totalAcePlayer == 2) {
+            System.out.println("Player score is 2 or 13");
+        }
+        else {
+            System.out.println("Player score is " + (playerCards.getFirst().value + playerCards.getLast().value));
+        }
 
         dealDelay();
 
@@ -77,11 +88,10 @@ public class BlackJackGame {
         Dealer dealer = new Dealer(dealerCards);
 
         dealer.score += hiddenCard.value;
-
-        //Calls cards to display to screen
-        dealer.getDealerCards();
-        p1.getPlayerCards();
-        System.out.println(p1.getScore());
+//        Calls cards to display to screen
+//        dealer.getDealerCards();
+//        p1.getPlayerCards();
+//        System.out.println("Player Score: " + p1.getScore());
 
         //Checks the players ace count
         if (totalAcePlayer == 1) {
@@ -110,82 +120,195 @@ public class BlackJackGame {
         }
         if (dealer.getScore() == 21 && p1.getScore() != 21) {
             System.out.println("Dealer Black Jack You Lose :(");
-            restartGame();
+            System.out.println("Press 1 to play again, Press 2 to exit");
+            int theChoice = sc.nextInt();
+            if (theChoice == 1) {
+                restartGame();
+            }
+            else if (theChoice == 2) {
+                System.exit(0);
+            }
         }
 
         while (dealer.getScore() <= 21 && p1.getScore() <= 21) {
-            System.out.println("Press 1 for hit, Press 2 for stay");
+            System.out.println();
+            System.out.println("Press 1 for hit, Press 2 to stand");
             int pick = sc.nextInt();
             if (pick == 1) {
                 dealDelay();
                 Card currCard = myDeck.getMyDeck().getFirst();
                 myDeck.getMyDeck().removeFirst();
+                System.out.println("Dealt Card: " +  currCard.getCard());
                 if (currCard.face.equals("A") && p1.score < 11) {
                     System.out.println("Pick 1 for " + p1.score + " Press 2 for " + (p1.score - 10));
                     int aceValue = sc.nextInt();
                     if (aceValue == 1) {
                         p1.playerAdd(currCard);
+                        dealDelay();
                         dealer.getDealerCards();
+                        dealDelay();
                         p1.getPlayerCards();
                         continue;
                     } else if (aceValue == 2) {
                         currCard.value = 1;
                         p1.playerAdd(currCard);
                         dealer.getDealerCards();
+                        dealDelay();
                         p1.getPlayerCards();
+                        dealDelay();
                     }
                 }
-                else if (currCard.value + p1.score > 21) {
+                else if (currCard.face.equals("A") && p1.score >= 11) {
+                    p1.score -= 10;
+                }
+                if (currCard.value + p1.score > 21) {
                     p1.playerAdd(currCard);
-                    System.out.println("You Bust :(");
-                    restartGame();
+                    dealDelay();
+                    p1.getPlayerCards();
+                    dealDelay();
+                    System.out.println("You Bust :( Score: " + p1.getScore());
+
+                    System.out.println("Press 1 to play again, Press 2 to exit");
+                    int theChoice = sc.nextInt();
+                    if (theChoice == 1) {
+                        restartGame();
+                    }
+                    else if (theChoice == 2) {
+                        System.exit(0);
+                    }
                 }
                 else {
                     p1.playerAdd(currCard);
+                    dealDelay();
                     dealer.getDealerCards();
+                    dealDelay();
                     p1.getPlayerCards();
+                    System.out.println("Score: " + p1.getScore());
                 }
 
-                System.out.println("Player score: " + p1.getScore());
                 if (p1.getScore() == 21) {
                     System.out.println("You Win!");
-                    restartGame();
+                    dealDelay();
+                    System.out.println("Press 1 to play again, Press 2 to exit");
+                    int theChoice = sc.nextInt();
+                    if (theChoice == 1) {
+                        restartGame();
+                    }
+                    else if (theChoice == 2) {
+                        System.exit(0);
+                    }
                 }
             }
+            // Handles stand logic
             else if (pick == 2) {
                 dealer.dealerHidden(hiddenCard);
-                Card currCard = myDeck.getMyDeck().getFirst();
+
                 dealer.getDealerCards();
                 System.out.println("Dealer Score: " + dealer.getScore());
+                dealDelay();
+
                 p1.getPlayerCards();
                 System.out.println("Player Score: " + p1.getScore());
+                dealDelay();
+
+                if (p1.getScore() > dealer.getScore() && dealer.getScore() >= 17 && totalAcePlayer == 0) {
+                    System.out.println("You Win!");
+                    dealDelay();
+                    System.out.println("Press 1 to play again, Press 2 to exit");
+                    int theChoice = sc.nextInt();
+                    if (theChoice == 1) {
+                        restartGame();
+                    }
+                    else if (theChoice == 2) {
+                        System.exit(0);
+                    }
+                }
+                if (dealer.getScore() >= 17 && p1.getScore() == dealer.getScore()) {
+                    System.out.println("Tie");
+                    dealDelay();
+                    System.out.println("Press 1 to play again, Press 2 to exit");
+                    int theChoice1 = sc.nextInt();
+                    if (theChoice1 == 1) {
+                        restartGame();
+                    }
+                    else if (theChoice1 == 2) {
+                        System.exit(0);
+                    }
+                }
+                else if (dealer.getScore() >= 17 && p1.getScore() < dealer.getScore()) {
+                    System.out.println("You Lose :(");
+                    dealDelay();
+                    System.out.println("Press 1 to play again, Press 2 to exit");
+                    int theChoice1 = sc.nextInt();
+                    if (theChoice1 == 1) {
+                        restartGame();
+                    } else if (theChoice1 == 2) {
+                        System.exit(0);
+                    } else {
+                        continue;
+                    }
+                }
 
                 while (dealer.getScore() < 17) {
-                    dealDelay();
+                    Card currCard = myDeck.getMyDeck().getFirst();
+                    myDeck.getMyDeck().removeFirst();
 
+                    System.out.println();
                     dealer.dealerAdd(currCard);
+
+                    dealDelay();
                     dealer.getDealerCards();
                     System.out.println("Dealer Score: " + dealer.getScore());
+
+                    dealDelay();
                     p1.getPlayerCards();
                     System.out.println("Player Score: " + p1.getScore());
 
                     if (dealer.getScore() > 21) {
                         System.out.println("Dealer Bust You Win!");
-                        restartGame();
-                    }
-                    else if (dealer.getScore() >= 17 && p1.getScore() > dealer.getScore()) {
+                        dealDelay();
+                        System.out.println("Press 1 to play again, Press 2 to exit");
+                        int theChoice2 = sc.nextInt();
+                        if (theChoice2 == 1) {
+                            restartGame();
+                        } else if (theChoice2 == 2) {
+                            System.exit(0);
+                        }
+                    } else if (dealer.getScore() >= 17 && p1.getScore() > dealer.getScore()) {
                         System.out.println("You Win!");
-                        restartGame();
+                        dealDelay();
+                        System.out.println("Press 1 to play again, Press 2 to exit");
+                        int theChoice2 = sc.nextInt();
+                        if (theChoice2 == 1) {
+                            restartGame();
+                        } else if (theChoice2 == 2) {
+                            System.exit(0);
+                        }
                     }
-                    else if (dealer.getScore() >= 17 && p1.getScore() == dealer.getScore()) {
+                    else if (dealer.getScore() == p1.getScore()) {
                         System.out.println("Tie");
-                        restartGame();
+                        dealDelay();
+                        System.out.println("Press 1 to play again, Press 2 to exit");
+                        int theChoice2 = sc.nextInt();
+                        if (theChoice2 == 1) {
+                            restartGame();
+                        } else if (theChoice2 == 2) {
+                            System.exit(0);
+                        }
                     }
-                    else if (dealer.getScore() >= 17 && p1.getScore() < dealer.getScore()) {
+                    else if (dealer.getScore() >= p1.getScore() && dealer.getScore() >= 17) {
                         System.out.println("You Lose :(");
-                        restartGame();
+                        dealDelay();
+                        System.out.println("Press 1 to play again, Press 2 to exit");
+                        int theChoice2 = sc.nextInt();
+                        if (theChoice2 == 1) {
+                            restartGame();
+                        } else if (theChoice2 == 2) {
+                            System.exit(0);
+                        }
                     }
                 }
+                break;
             }
         }
     }
