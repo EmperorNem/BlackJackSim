@@ -4,31 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer {
-    List<String> playerCards = new ArrayList<>();
-    int score = 0;
+    List<Card> playerCards = new ArrayList<>();
+    int hiddenVal = 0;
     public Dealer(List<Card> playerCard) {
-        for (Card card : playerCard) {
-            playerCards.add(card.getCard());
-            score = score + card.value;
-        }
+        playerCards.addAll(playerCard);
     }
     public void dealerAdd(Card dealtCard) {
-        playerCards.add(dealtCard.getCard());
-        score = score + dealtCard.value;
+        playerCards.add(dealtCard);
     }
     public void dealerHidden(Card dealtCard) {
-        playerCards.add(dealtCard.getCard());
-    }
-    public void setScore() {
-        score = 0;
+        playerCards.add(dealtCard);
     }
     public void getDealerCards() {
         System.out.print("Dealers cards: ");
-        for (String card : playerCards) {
-            System.out.println(card);
+        for (Card card : playerCards) {
+            System.out.println(card.getCard());
         }
     }
     public int getScore() {
-        return score;
+        int total = 0;
+        int aceCount = 0;
+
+        for (Card card : playerCards) {
+            total += card.value;
+
+            if (card.face.equals("A")) {
+                aceCount++;
+            }
+        }
+        total += hiddenVal;
+
+        while (total > 21 && aceCount > 0) {
+            total -= 10;
+            aceCount--;
+        }
+
+        return total;
     }
 }

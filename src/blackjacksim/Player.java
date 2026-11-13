@@ -5,22 +5,18 @@ import java.util.List;
 
 public class Player {
     List<Card> playerCards = new ArrayList<>();
-    int score = 0;
 
     //Creates Player object when game starts initialized with the first 2 cards dealt
     public Player(List<Card> playerCard) {
         for (Card card : playerCard) {
             playerCards.add(card);
-            score = score + card.value;
         }
     }
 
     public void playerAdd(Card dealtCard) {
         playerCards.add(dealtCard);
-        score += dealtCard.value;
     }
     public void resetPlayer() {
-        score = 0;
         playerCards.clear();
     }
     public void getPlayerCards() {
@@ -29,7 +25,24 @@ public class Player {
             System.out.println(card.getCard());
          }
     }
+    //Dynamic Score to calculate aces
     public int getScore() {
-        return score;
+        int total = 0;
+        int aceCount = 0;
+
+        for (Card card : playerCards) {
+            total += card.value;
+
+            if (card.face.equals("A")) {
+                aceCount++;
+            }
+        }
+
+        while (total > 21 && aceCount > 0) {
+            total -= 10;
+            aceCount--;
+        }
+
+        return total;
     }
 }

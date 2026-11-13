@@ -36,7 +36,13 @@ public class BlackJackGame {
     public void startGame() {
         myDeck.shuffleDeck();
         System.out.println("Welcome ready to play some black jack?");
-        System.out.println("Dealing in 3... 2... 1...");
+        System.out.print("Dealing in 3... ");
+        dealDelay();
+        System.out.print("2... ");
+        dealDelay();
+        System.out.print("1... ");
+        dealDelay();
+        System.out.println("Dealing!");
 
         playerCards.add(myDeck.getMyDeck().getFirst());
         myDeck.getMyDeck().removeFirst();
@@ -53,15 +59,29 @@ public class BlackJackGame {
         playerCards.add(myDeck.getMyDeck().getFirst());
         myDeck.getMyDeck().removeFirst();
         System.out.println("Player Cards: " + playerCards.getFirst().getCard() + ", " + playerCards.getLast().getCard());
-        if (totalAcePlayer == 1) {
-            System.out.println("Player score is " + (playerCards.getFirst().value + playerCards.getLast().value) + " or player score is " + (playerCards.getFirst().value + playerCards.getLast().value - 10));
-        }
-        else if (totalAcePlayer == 2) {
-            System.out.println("Player score is 2 or 13");
-        }
-        else {
-            System.out.println("Player score is " + (playerCards.getFirst().value + playerCards.getLast().value));
-        }
+
+//        if (dealerCards.getFirst().face.equals("A")) {
+//            totalAceDealer++;
+//        }
+//        if (dealerCards.getLast().face.equals("A")) {
+//            totalAceDealer++;
+//        }
+//        if (playerCards.getFirst().face.equals("A")) {
+//            totalAcePlayer++;
+//        }
+//        if (playerCards.getLast().face.equals("A")) {
+//            totalAcePlayer++;
+//        }
+//
+//        if (totalAcePlayer == 1) {
+//            System.out.println("Player score is " + (playerCards.getFirst().value + playerCards.getLast().value) + " or player score is " + (playerCards.getFirst().value + playerCards.getLast().value - 10));
+//        }
+//        else if (totalAcePlayer == 2) {
+//            System.out.println("Player score is 2 or 13");
+//        }
+//        else {
+//            System.out.println("Player score is " + (playerCards.getFirst().value + playerCards.getLast().value));
+//        }
 
         dealDelay();
 
@@ -71,55 +91,21 @@ public class BlackJackGame {
         //dealerCards.add(myDeck.getMyDeck().getFirst());
         myDeck.getMyDeck().removeFirst();
 
-        if (dealerCards.getFirst().face == "A") {
-            totalAceDealer++;
-        }
-        if (dealerCards.getLast().face == "A") {
-            totalAceDealer++;
-        }
-        if (playerCards.getFirst().face == "A") {
-            totalAcePlayer++;
-        }
-        if (playerCards.getLast().face == "A") {
-            totalAcePlayer++;
-        }
 
         Player p1 = new Player(playerCards);
         Dealer dealer = new Dealer(dealerCards);
 
-        dealer.score += hiddenCard.value;
+        dealer.hiddenVal += hiddenCard.value;
 //        Calls cards to display to screen
 //        dealer.getDealerCards();
 //        p1.getPlayerCards();
-//        System.out.println("Player Score: " + p1.getScore());
+        System.out.println("Player Score: " + p1.getScore());
 
-        //Checks the players ace count
-        if (totalAcePlayer == 1) {
-            System.out.println("Choose 1 for " + p1.getScore() + " Choose 2 for " + (p1.getScore() - 10));
-            int theChoice = sc.nextInt();
-            if (theChoice == 1) {
-                //Choice stays the same
-            } else if (theChoice == 2) {
-                p1.score -= 10;
-            }
-        }
-        if (totalAcePlayer == 2) {
-            System.out.println("Press 1 for Score: 2 Press 2 for Score: 13");
-            int theChoice = sc.nextInt();
-            if (theChoice == 1) {
-                p1.score = 2;
-            } else if (theChoice == 2) {
-                p1.score = 13;
-            }
-        }
 
         if (p1.getScore() == 21) {
 
             System.out.println("You win! \nScore: " + p1.getScore());
-            restartGame();
-        }
-        if (dealer.getScore() == 21 && p1.getScore() != 21) {
-            System.out.println("Dealer Black Jack You Lose :(");
+            dealDelay();
             System.out.println("Press 1 to play again, Press 2 to exit");
             int theChoice = sc.nextInt();
             if (theChoice == 1) {
@@ -129,7 +115,19 @@ public class BlackJackGame {
                 System.exit(0);
             }
         }
-
+        if (dealer.getScore() == 21 && p1.getScore() != 21) {
+            System.out.println("Dealer Black Jack You Lose :(");
+            dealDelay();
+            System.out.println("Press 1 to play again, Press 2 to exit");
+            int theChoice = sc.nextInt();
+            if (theChoice == 1) {
+                restartGame();
+            }
+            else if (theChoice == 2) {
+                System.exit(0);
+            }
+        }
+        //Main Game Logic
         while (dealer.getScore() <= 21 && p1.getScore() <= 21) {
             System.out.println();
             System.out.println("Press 1 for hit, Press 2 to stand");
@@ -139,29 +137,8 @@ public class BlackJackGame {
                 Card currCard = myDeck.getMyDeck().getFirst();
                 myDeck.getMyDeck().removeFirst();
                 System.out.println("Dealt Card: " +  currCard.getCard());
-                if (currCard.face.equals("A") && p1.score < 11) {
-                    System.out.println("Pick 1 for " + p1.score + " Press 2 for " + (p1.score - 10));
-                    int aceValue = sc.nextInt();
-                    if (aceValue == 1) {
-                        p1.playerAdd(currCard);
-                        dealDelay();
-                        dealer.getDealerCards();
-                        dealDelay();
-                        p1.getPlayerCards();
-                        continue;
-                    } else if (aceValue == 2) {
-                        currCard.value = 1;
-                        p1.playerAdd(currCard);
-                        dealer.getDealerCards();
-                        dealDelay();
-                        p1.getPlayerCards();
-                        dealDelay();
-                    }
-                }
-                else if (currCard.face.equals("A") && p1.score >= 11) {
-                    p1.score -= 10;
-                }
-                if (currCard.value + p1.score > 21) {
+
+                if (currCard.value + p1.getScore() > 21) {
                     p1.playerAdd(currCard);
                     dealDelay();
                     p1.getPlayerCards();
@@ -211,7 +188,7 @@ public class BlackJackGame {
                 System.out.println("Player Score: " + p1.getScore());
                 dealDelay();
 
-                if (p1.getScore() > dealer.getScore() && dealer.getScore() >= 17 && totalAcePlayer == 0) {
+                if (p1.getScore() > dealer.getScore() && dealer.getScore() >= 17) {
                     System.out.println("You Win!");
                     dealDelay();
                     System.out.println("Press 1 to play again, Press 2 to exit");
@@ -255,6 +232,8 @@ public class BlackJackGame {
 
                     System.out.println();
                     dealer.dealerAdd(currCard);
+                    System.out.println();
+                    System.out.println("Dealt Card: " +  currCard.getCard());
 
                     dealDelay();
                     dealer.getDealerCards();
