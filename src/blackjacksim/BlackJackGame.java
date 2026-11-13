@@ -101,6 +101,8 @@ public class BlackJackGame {
 //        p1.getPlayerCards();
         System.out.println("Player Score: " + p1.getScore());
 
+//        System.out.println("Dealer Score: " + dealer.getScore());
+
 
         if (p1.getScore() == 21) {
 
@@ -112,6 +114,8 @@ public class BlackJackGame {
                 restartGame();
             }
             else if (theChoice == 2) {
+                System.out.println("Thanks for playing!");
+                dealDelay();
                 System.exit(0);
             }
         }
@@ -124,6 +128,8 @@ public class BlackJackGame {
                 restartGame();
             }
             else if (theChoice == 2) {
+                System.out.println("Thanks for playing!");
+                dealDelay();
                 System.exit(0);
             }
         }
@@ -151,6 +157,8 @@ public class BlackJackGame {
                         restartGame();
                     }
                     else if (theChoice == 2) {
+                        System.out.println("Thanks for playing!");
+                        dealDelay();
                         System.exit(0);
                     }
                 }
@@ -172,6 +180,8 @@ public class BlackJackGame {
                         restartGame();
                     }
                     else if (theChoice == 2) {
+                        System.out.println("Thanks for playing!");
+                        dealDelay();
                         System.exit(0);
                     }
                 }
@@ -197,6 +207,8 @@ public class BlackJackGame {
                         restartGame();
                     }
                     else if (theChoice == 2) {
+                        System.out.println("Thanks for playing!");
+                        dealDelay();
                         System.exit(0);
                     }
                 }
@@ -209,6 +221,8 @@ public class BlackJackGame {
                         restartGame();
                     }
                     else if (theChoice1 == 2) {
+                        System.out.println("Thanks for playing!");
+                        dealDelay();
                         System.exit(0);
                     }
                 }
@@ -220,6 +234,8 @@ public class BlackJackGame {
                     if (theChoice1 == 1) {
                         restartGame();
                     } else if (theChoice1 == 2) {
+                        System.out.println("Thanks for playing!");
+                        dealDelay();
                         System.exit(0);
                     } else {
                         continue;
@@ -251,6 +267,8 @@ public class BlackJackGame {
                         if (theChoice2 == 1) {
                             restartGame();
                         } else if (theChoice2 == 2) {
+                            System.out.println("Thanks for playing!");
+                            dealDelay();
                             System.exit(0);
                         }
                     } else if (dealer.getScore() >= 17 && p1.getScore() > dealer.getScore()) {
@@ -261,6 +279,8 @@ public class BlackJackGame {
                         if (theChoice2 == 1) {
                             restartGame();
                         } else if (theChoice2 == 2) {
+                            System.out.println("Thanks for playing!");
+                            dealDelay();
                             System.exit(0);
                         }
                     }
@@ -272,6 +292,8 @@ public class BlackJackGame {
                         if (theChoice2 == 1) {
                             restartGame();
                         } else if (theChoice2 == 2) {
+                            System.out.println("Thanks for playing!");
+                            dealDelay();
                             System.exit(0);
                         }
                     }
@@ -283,6 +305,8 @@ public class BlackJackGame {
                         if (theChoice2 == 1) {
                             restartGame();
                         } else if (theChoice2 == 2) {
+                            System.out.println("Thanks for playing!");
+                            dealDelay();
                             System.exit(0);
                         }
                     }

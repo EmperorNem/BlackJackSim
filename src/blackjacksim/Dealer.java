@@ -32,7 +32,7 @@ public class Dealer {
                 aceCount++;
             }
         }
-        total += hiddenVal;
+//        total += hiddenVal;
 
         while (total > 21 && aceCount > 0) {
             total -= 10;
